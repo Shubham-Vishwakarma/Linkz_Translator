@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="?attr/actionBarSize"
+    tools:context="com.example.admin.translator.fragments.SpeechToSpeechFragment">
+
+    <Button
+        android:id="@+id/speakButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/speak"
+        android:layout_margin="@dimen/padding8dp"
+        android:textSize="@dimen/textSize20sp"
+        android:drawableLeft="@drawable/ic_mic_on_black_48dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timer"
+            android:textSize="@dimen/textSize20sp"/>
+
+        <TextView
+            android:id="@+id/timerTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize20sp"
+            android:paddingLeft="@dimen/padding8dp"
+            android:text="@string/_00_05_00"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/input_speech"
+        android:padding="@dimen/padding8dp"
+        android:textSize="@dimen/textSize18sp"/>
+
+    <TextView
+        android:id="@+id/resultTextView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/edittext_height_100dp"
+        android:layout_margin="8dp"
+        android:textSize="@dimen/textSize20sp"
+        android:padding="@dimen/padding8dp"
+        android:hint="@string/your_input_text_will_be_displayed_here"
+        android:background="@drawable/rounded_edittext"/>
+
+</LinearLayout>

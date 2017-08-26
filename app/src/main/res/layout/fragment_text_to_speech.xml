@@ -1,0 +1,49 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:orientation="vertical"
+    tools:context="com.example.admin.translator.fragments.TextToSpeechFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize20sp"
+            android:padding="@dimen/padding8dp"
+            android:text="@string/voice"/>
+
+        <Spinner
+            android:id="@+id/voicesSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/padding8dp"
+            android:entries="@array/voices">
+        </Spinner>
+
+    </LinearLayout>
+
+    <android.support.design.widget.TextInputEditText
+        android:id="@+id/textInput"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/edittext_height_100dp"
+        android:inputType="text"
+        android:layout_margin="@dimen/padding8dp"
+        android:padding="@dimen/padding8dp"
+        android:gravity="start"
+        android:hint="@string/enter_text_here"
+        android:background="@drawable/rounded_edittext"/>
+
+    <Button
+        android:id="@+id/translateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding8dp"
+        android:text="@string/tap_to_listen"/>
+
+</LinearLayout>

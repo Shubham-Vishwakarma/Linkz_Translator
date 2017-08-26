@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="languages">
+        <item>Spanish</item>
+        <item>German</item>
+        <item>French</item>
+        <item>Hindi</item>
+        <item>Bengali</item>
+    </string-array>
+
+    <string-array name="voices">
+        <item>EN_ALLISON</item>
+        <item>EN_LISA</item>
+        <item>EN_MICHAEL</item>
+        <item>FR_RENEE</item>
+        <item>GB_KATE</item>
+        <item>ES_SOFIA</item>
+    </string-array>
+</resources>

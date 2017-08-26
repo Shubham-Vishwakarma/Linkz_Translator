@@ -1,0 +1,174 @@
+package com.example.admin.translator.fragments;
+
+
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.example.admin.translator.IBMUtilies.IBMInitialization;
+import com.example.admin.translator.IBMUtilies.MicrophoneRecognizeDelegate;
+import com.example.admin.translator.IBMUtilies.SynthesisTask;
+import com.example.admin.translator.R;
+import com.ibm.watson.developer_cloud.android.library.audio.MicrophoneInputStream;
+import com.ibm.watson.developer_cloud.language_translator.v2.LanguageTranslator;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.SpeechToText;
+import com.ibm.watson.developer_cloud.text_to_speech.v1.TextToSpeech;
+import com.ibm.watson.developer_cloud.text_to_speech.v1.model.Voice;
+
+import java.io.IOException;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class SpeechToSpeechFragment extends Fragment {
+
+    private static final String TAG = "SpeechToSpeechFragment";
+    private static final int DEFAULT_TIMEOUT = 5000;
+    private Button speakButton;
+    private TextView resultTextView,timerTextView;
+
+    private SpeechToText speechService;
+    private LanguageTranslator translationService;
+    private TextToSpeech textService;
+    private MicrophoneInputStream capture;
+    private boolean listening = false;
+
+
+    public SpeechToSpeechFragment() {
+        // Required empty public constructor
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_speech_to_speech, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        speakButton = (Button)view.findViewById(R.id.speakButton);
+        resultTextView = (TextView)view.findViewById(R.id.resultTextView);
+        timerTextView = (TextView)view.findViewById(R.id.timerTextView);
+
+        speechService = IBMInitialization.initSpeechToTextService(getContext());
+        translationService = IBMInitialization.initLanguageTranslationService(getContext());
+        textService = IBMInitialization.initTextToSpeechService(getContext());
+
+        speakButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    if(!listening)
+                    {
+                        Drawable drawableLeft;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            drawableLeft = getActivity().getDrawable(R.drawable.ic_mic_off_black_48dp);
+                        }
+                        else {
+                            drawableLeft = getActivity().getResources().getDrawable(R.drawable.ic_mic_off_black_48dp);
+                        }
+                        speakButton.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,null,null,null);
+                        timer();
+                        capture = new MicrophoneInputStream(true);
+                        listening = true;
+
+                        Log.e(TAG,"Speech Recognizing started");
+                        speechService.recognizeUsingWebSocket(
+                                capture, IBMInitialization.getRecognizeOptions(),
+                                new MicrophoneRecognizeDelegate(getActivity(),resultTextView));
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    capture.close();
+                                    listening = false;
+                                    //Log.e(TAG,"Translation started");
+                                    //new TranslationTask(getActivity(),translationService, Language.ENGLISH,Language.SPANISH,resultTextView)
+                                    //        .execute(resultTextView.getText().toString());
+                                    Log.e(TAG,"Speech started");
+                                    new SynthesisTask(getActivity(),textService, Voice.EN_ALLISON).execute(resultTextView.getText().toString());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },DEFAULT_TIMEOUT);
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        /*speakButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e(TAG,"Listening = " + listening);
+                if(!listening){
+                    capture = new MicrophoneInputStream(true);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                Log.e(TAG,"Speech Recognizing started");
+                                speechService.recognizeUsingWebSocket(
+                                        capture, IBMInitialization.getRecognizeOptions(),
+                                        new MicrophoneRecognizeDelegate(MainActivity.this,resultTextView));
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                    listening = true;
+                }
+                else {
+                    try {
+                        capture.close();
+                        listening = false;
+                        Log.e(TAG,"Translation started");
+                        new TranslationTask(MainActivity.this,translationService, Language.ENGLISH,Language.SPANISH,resultTextView)
+                                .execute(resultTextView.getText().toString());
+                        Log.e(TAG,"Speech started");
+                        new SynthesisTask(MainActivity.this,textService, Voice.EN_ALLISON).execute(resultTextView.getText().toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });*/
+    }
+
+    private void timer(){
+        new CountDownTimer(DEFAULT_TIMEOUT,100){
+            @Override
+            public void onTick(long l) {
+                Log.e(TAG,"l = " + l);
+                String leftTime = "00:" + "0" + ((l/1000)%60) + ":" + ((l/100)%60);
+                timerTextView.setText(leftTime);
+            }
+
+            @Override
+            public void onFinish() {
+                timerTextView.setText(R.string._00_00_00);
+                cancel();
+            }
+        }.start();
+    }
+}

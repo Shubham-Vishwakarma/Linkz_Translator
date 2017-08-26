@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="?attr/actionBarSize"
+    tools:context="com.example.admin.translator.fragments.TextToTextFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize20sp"
+            android:padding="@dimen/padding8dp"
+            android:text="@string/target_language"/>
+
+        <Spinner
+            android:id="@+id/languagesSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/padding8dp"
+            android:entries="@array/languages">
+        </Spinner>
+
+    </LinearLayout>
+
+    <android.support.design.widget.TextInputEditText
+        android:id="@+id/textInput"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:padding="@dimen/padding8dp"
+        android:gravity="start"
+        android:hint="@string/enter_text_here"
+        android:textSize="@dimen/textSize20sp"
+        android:background="@drawable/rounded_edittext"
+        android:layout_margin="@dimen/padding8dp"/>
+
+    <Button
+        android:id="@+id/translateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding8dp"
+        android:text="@string/translate"/>
+
+    <TextView
+        android:id="@+id/resultTextView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:textSize="@dimen/textSize20sp"
+        android:padding="@dimen/padding8dp"
+        android:gravity="start"
+        android:hint="@string/your_translated_text_here"
+        android:background="@drawable/rounded_edittext"
+        android:layout_margin="@dimen/padding8dp"/>
+</LinearLayout>
