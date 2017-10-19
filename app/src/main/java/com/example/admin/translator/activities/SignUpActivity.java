@@ -119,8 +119,8 @@ public class SignUpActivity extends AppCompatActivity{
         return true;
     }
 
-    public boolean isValidEmail(String target) {
-        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    public boolean isValidEmail(String email) {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private void showProgressDialog(){
