@@ -87,10 +87,11 @@
                             android:id="@+id/email"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:hint="@string/prompt_email"
+                            android:hint="@string/email"
                             android:imeOptions="actionNext"
                             android:inputType="textEmailAddress"
-                            android:maxLines="1" />
+                            android:maxLines="1"
+                            android:paddingLeft="@dimen/padding8dp"/>
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -104,7 +105,8 @@
                             android:id="@+id/password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/prompt_password"
+                            android:hint="@string/password"
+                            android:paddingLeft="@dimen/padding8dp"
                             android:imeActionId="@+id/login"
                             android:imeActionLabel="@string/action_sign_in_short"
                             android:imeOptions="actionDone"

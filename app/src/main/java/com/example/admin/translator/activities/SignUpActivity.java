@@ -1,23 +1,23 @@
 package com.example.admin.translator.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.admin.translator.Constants;
 import com.example.admin.translator.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 /**
  * Created by DELL on 31/03/2017.
@@ -26,33 +26,24 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 public class SignUpActivity extends AppCompatActivity{
 
 
-    EditText emailEdiText ,passwordEditText,name_editText;
+    EditText emailEdiText ,passwordEditText,nameEditText;
     Button signupButton;//loginButton,;
     private FirebaseAuth firebaseAuth;
     private  FirebaseAuth.AuthStateListener authStateListener;
+    private String name,email,password;
+    private ProgressDialog progressDialog;
 
     //Button signout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getSharedPreferences(Constants.PREFS, MODE_PRIVATE).getBoolean(Constants.DARK_THEME, false))
-            setTheme(R.style.AppTheme_NoActionBar);
         setContentView(R.layout.activity_sign_up);
 
-
-        emailEdiText = (EditText)findViewById(R.id.email_editText);
-        passwordEditText =(EditText)findViewById(R.id.password_editText);
-        signupButton= (Button)findViewById(R.id.signinButton);
-        name_editText = (EditText)findViewById(R.id.name_editText);
-        //loginButton = (Button)findViewById(R.id.loginButton);
-        //signout = (Button)findViewById(R.id.signout);
-        /*signout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-            }
-        });*/
+        emailEdiText = findViewById(R.id.email_editText);
+        passwordEditText = findViewById(R.id.password_editText);
+        signupButton= findViewById(R.id.signinButton);
+        nameEditText = findViewById(R.id.name_editText);
 
         firebaseAuth =FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -60,56 +51,39 @@ public class SignUpActivity extends AppCompatActivity{
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null){
-                    String name = name_editText.getText().toString();
-                    if(!name.equals("")){
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(name).build();
-                        user.updateProfile(profileUpdates);
-                    }
-
-                    Toast.makeText(SignUpActivity.this,user.getUid().toString(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUpActivity.this,"Welcome " + name,Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(SignUpActivity.this,MainActivity.class));
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "onAuthStateChanged:signed_out", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
         };
 
-        /*loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                login();
-            }
-        });*/
-
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signUP();
+                name = nameEditText.getText().toString();
+                email = emailEdiText.getText().toString();
+                password = passwordEditText.getText().toString();
+                if(isValid()){
+                    showProgressDialog();
+                    signup(email,password);
+                }
             }
         });
 
     }
 
-    public void signUP(){
-
-        firebaseAuth.createUserWithEmailAndPassword(
-                emailEdiText.getText().toString(),
-                passwordEditText.getText().toString())
+    public void signup(String email,String password){
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        //Toast.makeText(getApplicationContext(),"createUserWithEmail:onComplete:" + task.isSuccessful(),Toast.LENGTH_SHORT).show();
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
+                        hideProgressDialog();
                         if (!task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(),"Unsuccessful",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpActivity.this,R.string.error,Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-
     }
 
     @Override
@@ -126,4 +100,38 @@ public class SignUpActivity extends AppCompatActivity{
         }
     }
 
+    private boolean isValid(){
+        if(name.isEmpty()){
+            nameEditText.setError(getString(R.string.name_error));
+            nameEditText.setFocusable(true);
+            return false;
+        }
+        else if(!isValidEmail(email)){
+            emailEdiText.setError(getString(R.string.email_error));
+            emailEdiText.setFocusable(true);
+            return false;
+        }
+        else if(password.isEmpty() || password.length()<8){
+            passwordEditText.setError(getString(R.string.password_error));
+            passwordEditText.setFocusable(true);
+            return  false;
+        }
+        return true;
+    }
+
+    public boolean isValidEmail(String target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
+
+    private void showProgressDialog(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage(getString(R.string.registering));
+        progressDialog.show();
+    }
+
+    private void hideProgressDialog(){
+        progressDialog.dismiss();
+    }
 }

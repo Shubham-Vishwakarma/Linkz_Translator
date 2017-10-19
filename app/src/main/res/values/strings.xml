@@ -33,11 +33,16 @@
 
     <!--SignUpActivity-->
     <string name="please_wait">Please Wait</string>
-    <string name="prompt_name">Prompt Name</string>
-    <string name="prompt_email">Prompt Email</string>
-    <string name="prompt_password">Prompt Password</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
     <string name="action_sign_in_short">Sign In</string>
     <string name="sign_up">Sign Up</string>
+    <string name="name_error">Please enter your name</string>
+    <string name="email_error">Please enter a valid email</string>
+    <string name="password_error">Please enter a password of minimum 8 characters</string>
+    <string name="error">An error has encountered</string>
+    <string name="registering">Registering to Linkz_Translator…</string>
 
     <!--LoginActivity-->
     <string name="no_account">Please Register first</string>
