@@ -1,10 +1,10 @@
 package com.example.admin.translator.fragments;
 
 
-import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +22,8 @@ import com.ibm.watson.developer_cloud.android.library.audio.MicrophoneInputStrea
 import com.ibm.watson.developer_cloud.speech_to_text.v1.SpeechToText;
 
 import java.io.IOException;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,18 +65,19 @@ public class SpeechToTextFragment extends Fragment {
         speakButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                i.putExtra(RecognizerIntent.EXTRA_PROMPT, "Say something");
+
+                startActivityForResult(i,1010);
+
                 Log.e(TAG,"Listening = " + listening);
                 if(!listening){
-                    Drawable drawableLeft;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        drawableLeft = getActivity().getDrawable(R.drawable.ic_mic_off_black_48dp);
-                    }
-                    else {
-                        drawableLeft = getActivity().getResources().getDrawable(R.drawable.ic_mic_off_black_48dp);
-                    }
-                    speakButton.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,null,null,null);
                     timer();
                     capture = new MicrophoneInputStream(true);
+
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -117,5 +120,26 @@ public class SpeechToTextFragment extends Fragment {
                 cancel();
             }
         }.start();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        // retrieves data from the VoiceRecognizer
+        if (requestCode == 1010 && resultCode == RESULT_OK) {
+
+            Log.e(TAG,"RequestCode = " + requestCode);
+            Log.e(TAG,"ResultCode = " + resultCode);
+            Log.e(TAG,"Data = " + data.getExtras());
+            Log.e(TAG,"RecongnizerIntent = " + data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS));
+            Log.e(TAG,"Voice = " + data.getStringArrayListExtra(RecognizerIntent.EXTRA_MAX_RESULTS));
+            Log.e(TAG,"Confidence = " + data.getStringExtra(RecognizerIntent.EXTRA_CONFIDENCE_SCORES));
+
+            //results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            //options.setAdapter(new ArrayAdapter<String>(this,
+                    //android.R.layout.simple_list_item_1, results));
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

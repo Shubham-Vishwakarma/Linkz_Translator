@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "176192688917",
+    "firebase_url": "https://linkz-translator.firebaseio.com",
+    "project_id": "linkz-translator",
+    "storage_bucket": "linkz-translator.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176192688917:android:96e9bde544a4e1bf",
+        "android_client_info": {
+          "package_name": "com.example.admin.translator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "176192688917-mqnntc684e8p0osabccrddacqflghso8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKuJoRWvdAt0yGGB3ISUZKznvbPHUPkjI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

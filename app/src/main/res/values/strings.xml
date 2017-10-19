@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Translator</string>
+    <string name="app_name">Linkz-Translator</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -30,4 +30,20 @@
     <string name="tap_to_listen">Tap to Listen</string>
     <string name="your_input_text_will_be_displayed_here">Your input text will be displayed here…</string>
     <string name="voice">Voice</string>
+
+    <!--SignUpActivity-->
+    <string name="please_wait">Please Wait</string>
+    <string name="prompt_name">Prompt Name</string>
+    <string name="prompt_email">Prompt Email</string>
+    <string name="prompt_password">Prompt Password</string>
+    <string name="action_sign_in_short">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+
+    <!--LoginActivity-->
+    <string name="no_account">Please Register first</string>
+    <string name="action_sign_up_short">Sign Up</string>
+    <string name="error_invalid_password">Invalid Password</string>
+    <string name="error_field_required">Feild Required</string>
+    <string name="error_invalid_email">Invalid Email</string>
+
 </resources>
