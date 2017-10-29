@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -50,10 +51,11 @@ public class TextToTextFragment extends Fragment {
 
         translationService = IBMInitialization.initLanguageTranslationService(getContext());
 
-        translateButton = (Button)view.findViewById(R.id.translateButton);
-        textInput = (TextInputEditText)view.findViewById(R.id.textInput);
-        resultTextView = (TextView)view.findViewById(R.id.resultTextView);
-        languagesSpinner = (Spinner)view.findViewById(R.id.languagesSpinner);
+        translateButton = view.findViewById(R.id.translateButton);
+        textInput = view.findViewById(R.id.textInput);
+        resultTextView = view.findViewById(R.id.resultTextView);
+        languagesSpinner = view.findViewById(R.id.languagesSpinner);
+        setupSpinner();
 
         languagesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -86,5 +88,13 @@ public class TextToTextFragment extends Fragment {
                         .execute(textInput.getText().toString());
             }
         });
+    }
+
+    private void setupSpinner(){
+        String voices[] = getActivity().getResources().getStringArray(R.array.languages);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.spinner_item,voices);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
+        languagesSpinner.setAdapter(adapter);
+        languagesSpinner.setPadding(8,8,8,8);
     }
 }

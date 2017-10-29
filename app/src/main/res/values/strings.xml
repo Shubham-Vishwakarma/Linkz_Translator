@@ -23,7 +23,7 @@
 
     <!--TextToTextFragment-->
     <string name="target_language">Target Language</string>
-    <string name="enter_text_here">Enter Text here…</string>
+    <string name="enter_text_here">Input Text here…</string>
     <string name="your_translated_text_here">Your translated text here…</string>
 
     <!--TextToSpeechFragment-->

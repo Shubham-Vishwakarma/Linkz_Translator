@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_marginTop="?attr/actionBarSize"
+    android:background="@color/white"
     tools:context="com.example.admin.translator.fragments.TextToTextFragment">
 
     <LinearLayout
@@ -14,14 +15,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/textSize20sp"
+            android:textSize="@dimen/textSize25sp"
             android:padding="@dimen/padding8dp"
+            android:textColor="@color/red"
             android:text="@string/target_language"/>
 
         <Spinner
             android:id="@+id/languagesSpinner"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:padding="@dimen/padding8dp"
             android:entries="@array/languages">
         </Spinner>
@@ -31,12 +33,14 @@
     <android.support.design.widget.TextInputEditText
         android:id="@+id/textInput"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:padding="@dimen/padding8dp"
+        android:layout_height="200dp"
+        android:padding="16dp"
         android:gravity="start"
         android:hint="@string/enter_text_here"
         android:textSize="@dimen/textSize20sp"
-        android:background="@drawable/rounded_edittext"
+        android:textColor="@color/red"
+        android:textColorHint="@color/red"
+        android:background="@drawable/bubble_text"
         android:layout_margin="@dimen/padding8dp"/>
 
     <Button
@@ -44,16 +48,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/padding8dp"
-        android:text="@string/translate"/>
+        android:text="@string/translate"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textSize20sp"
+        android:background="@drawable/brown_button"/>
 
     <TextView
         android:id="@+id/resultTextView"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="200dp"
         android:textSize="@dimen/textSize20sp"
-        android:padding="@dimen/padding8dp"
+        android:padding="16dp"
         android:gravity="start"
+        android:textColor="@color/red"
+        android:textColorHint="@color/red"
         android:hint="@string/your_translated_text_here"
-        android:background="@drawable/rounded_edittext"
+        android:background="@drawable/bubble_text"
         android:layout_margin="@dimen/padding8dp"/>
 </LinearLayout>
