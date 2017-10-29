@@ -11,10 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.admin.translator.IBMUtilies.IBMInitialization;
 import com.example.admin.translator.IBMUtilies.MicrophoneRecognizeDelegate;
@@ -46,6 +48,7 @@ public class SpeechToSpeechFragment extends Fragment {
     private TextToSpeech textService;
     private MicrophoneInputStream capture;
     private boolean listening = false;
+    private Voice selectedVoice;
 
 
     public SpeechToSpeechFragment() {
@@ -70,11 +73,37 @@ public class SpeechToSpeechFragment extends Fragment {
         resultTextView = view.findViewById(R.id.resultTextView);
         timerTextView = view.findViewById(R.id.timerTextView);
         voicesSpinner = view.findViewById(R.id.voicesSpinner);
+        listenButton = view.findViewById(R.id.listenButton);
 
         speechService = IBMInitialization.initSpeechToTextService(getContext());
         translationService = IBMInitialization.initLanguageTranslationService(getContext());
         textService = IBMInitialization.initTextToSpeechService(getContext());
         setupSpinner();
+
+        voicesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i){
+                    case 0 : selectedVoice = Voice.EN_ALLISON;
+                        break;
+                    case 1 : selectedVoice = Voice.EN_LISA;
+                        break;
+                    case 2 : selectedVoice = Voice.EN_MICHAEL;
+                        break;
+                    case 3 : selectedVoice = Voice.FR_RENEE;
+                        break;
+                    case 4 : selectedVoice = Voice.GB_KATE;
+                        break;
+                    case 5 : selectedVoice = Voice.ES_SOFIA;
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                selectedVoice = Voice.EN_ALLISON;
+            }
+        });
 
         speakButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,8 +129,6 @@ public class SpeechToSpeechFragment extends Fragment {
                                     Log.e(TAG,"Translation started");
                                     new TranslationTask(getActivity(),translationService, Language.ENGLISH,Language.SPANISH,resultTextView)
                                             .execute(resultTextView.getText().toString());
-                                    Log.e(TAG,"Speech started");
-                                    new SynthesisTask(getActivity(),textService, Voice.EN_ALLISON).execute(resultTextView.getText().toString());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -113,6 +140,18 @@ public class SpeechToSpeechFragment extends Fragment {
                 {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        listenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!resultTextView.getText().toString().isEmpty()) {
+                    Log.e(TAG, "Speech started");
+                    new SynthesisTask(getActivity(), textService, selectedVoice).execute(resultTextView.getText().toString());
+                }
+                else
+                    Toast.makeText(getContext(),"Please speak something first",Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.admin.translator.IBMUtilies.IBMInitialization;
 import com.example.admin.translator.IBMUtilies.SynthesisTask;
@@ -84,7 +85,11 @@ public class TextToSpeechFragment extends Fragment {
         translateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new SynthesisTask(getActivity(),textService, selectedVoice).execute(textInput.getText().toString());
+                if(!textInput.getText().toString().isEmpty()) {
+                    new SynthesisTask(getActivity(), textService, selectedVoice).execute(textInput.getText().toString());
+                }
+                else
+                    Toast.makeText(getContext(),"Please enter some string first",Toast.LENGTH_SHORT).show();
             }
         });
     }

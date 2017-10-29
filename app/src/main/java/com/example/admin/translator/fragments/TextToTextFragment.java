@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.admin.translator.IBMUtilies.IBMInitialization;
 import com.example.admin.translator.IBMUtilies.TranslationTask;
@@ -49,6 +51,7 @@ public class TextToTextFragment extends Fragment {
     public void onViewCreated(View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.text_to_text);
         translationService = IBMInitialization.initLanguageTranslationService(getContext());
 
         translateButton = view.findViewById(R.id.translateButton);
@@ -84,8 +87,12 @@ public class TextToTextFragment extends Fragment {
         translateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new TranslationTask(getActivity(),translationService,Language.ENGLISH,selectedTargetLanguage,resultTextView)
-                        .execute(textInput.getText().toString());
+                if(!resultTextView.getText().toString().isEmpty()) {
+                    new TranslationTask(getActivity(), translationService, Language.ENGLISH, selectedTargetLanguage, resultTextView)
+                            .execute(textInput.getText().toString());
+                }
+                else
+                    Toast.makeText(getContext(),"Please enter some string first",Toast.LENGTH_SHORT).show();
             }
         });
     }

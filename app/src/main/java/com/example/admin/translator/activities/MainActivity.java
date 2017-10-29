@@ -147,6 +147,9 @@ public class MainActivity extends AppCompatActivity
                     if(isInternetConnected()) {
                         FirebaseAuth.getInstance().signOut();
                         finish();
+                        SharedPreferences.Editor editor = getSharedPreferences(Constants.PREFS,MODE_PRIVATE).edit();
+                        editor.clear();
+                        editor.apply();
                         startActivity(new Intent(MainActivity.this,LoginActivity.class));
                     }
                 }
