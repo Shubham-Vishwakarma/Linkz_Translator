@@ -2,56 +2,115 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_marginTop="?attr/actionBarSize"
     tools:context="com.example.admin.translator.fragments.SpeechToSpeechFragment">
 
-    <Button
+    <LinearLayout
         android:id="@+id/speakButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/speak"
-        android:layout_margin="@dimen/padding8dp"
-        android:textSize="@dimen/textSize20sp"
-        android:drawableLeft="@drawable/ic_mic_on_black_48dp" />
+        android:orientation="vertical">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="@dimen/speaker_radius"
+            android:layout_height="@dimen/speaker_radius"
+            android:src="@drawable/speaker"
+            android:layout_gravity="center"
+            app:civ_border_color="@color/red"
+            app:civ_border_width="@dimen/speaker_border_width"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize20sp"
+            android:text="@string/speak"
+            android:gravity="center"
+            android:padding="@dimen/padding8dp"
+            android:textColor="@color/red"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="@dimen/padding8dp">
+        android:padding="@dimen/padding8dp"
+        android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/timer"
-            android:textSize="@dimen/textSize20sp"/>
+            android:textSize="@dimen/textSize25sp"
+            android:textColor="@color/dark_blue"/>
 
         <TextView
             android:id="@+id/timerTextView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/textSize20sp"
-            android:paddingLeft="@dimen/padding8dp"
-            android:text="@string/_00_05_00"/>
+            android:textSize="@dimen/textSize25sp"
+            android:text="@string/_00_05_00"
+            android:textColor="@color/dark_blue"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize25sp"
+            android:padding="@dimen/padding8dp"
+            android:text="@string/voice"
+            android:textColor="@color/red"/>
+
+        <Spinner
+            android:id="@+id/voicesSpinner"
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:padding="@dimen/padding8dp"
+            android:entries="@array/voices">
+        </Spinner>
 
     </LinearLayout>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/input_speech"
-        android:padding="@dimen/padding8dp"
-        android:textSize="@dimen/textSize18sp"/>
-
-    <TextView
         android:id="@+id/resultTextView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/edittext_height_100dp"
+        android:layout_height="@dimen/edittext_height_50dp"
         android:layout_margin="8dp"
         android:textSize="@dimen/textSize20sp"
         android:padding="@dimen/padding8dp"
+        android:textColor="@color/red"
         android:hint="@string/your_input_text_will_be_displayed_here"
         android:background="@drawable/rounded_edittext"/>
+
+    <LinearLayout
+        android:id="@+id/listenButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding8dp">
+
+        <ImageView
+            android:layout_width="@dimen/speaker_radius"
+            android:layout_height="@dimen/speaker_radius"
+            android:src="@drawable/megaphone"
+            android:layout_gravity="center"
+            android:contentDescription="@string/tap_to_listen" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize20sp"
+            android:text="@string/tap_to_listen"
+            android:gravity="center"
+            android:padding="@dimen/padding8dp"
+            android:textColor="@color/red"/>
+    </LinearLayout>
 
 </LinearLayout>

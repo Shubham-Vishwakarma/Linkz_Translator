@@ -11,6 +11,12 @@
     <dimen name="textSize15sp">15sp</dimen>
     <dimen name="textSize18sp">18sp</dimen>
     <dimen name="textSize20sp">20sp</dimen>
+    <dimen name="textSize25sp">25sp</dimen>
 
     <dimen name="edittext_height_100dp">100dp</dimen>
+    <dimen name="edittext_height_50dp">50dp</dimen>
+
+    <dimen name="speaker_radius">100dp</dimen>
+    <dimen name="speaker_border_width">2dp</dimen>
+
 </resources>
