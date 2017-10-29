@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.example.admin.translator.IBMUtilies.IBMInitialization;
@@ -26,7 +28,7 @@ public class TextToSpeechFragment extends Fragment {
     private static final String TAG = "TextToSpeechFragment";
     private TextToSpeech textService;
     private TextInputEditText textInput;
-    private Button translateButton;
+    private LinearLayout translateButton;
     private Spinner voicesSpinner;
     private Voice selectedVoice;
 
@@ -46,10 +48,13 @@ public class TextToSpeechFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.text_to_speech);
+
         textService = IBMInitialization.initTextToSpeechService(getContext());
-        textInput = (TextInputEditText)view.findViewById(R.id.textInput);
-        translateButton = (Button)view.findViewById(R.id.translateButton);
-        voicesSpinner = (Spinner)view.findViewById(R.id.voicesSpinner);
+        textInput = view.findViewById(R.id.textInput);
+        translateButton = view.findViewById(R.id.translateButton);
+        voicesSpinner = view.findViewById(R.id.voicesSpinner);
+        setupSpinner();
 
         voicesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -82,5 +87,13 @@ public class TextToSpeechFragment extends Fragment {
                 new SynthesisTask(getActivity(),textService, selectedVoice).execute(textInput.getText().toString());
             }
         });
+    }
+
+    private void setupSpinner(){
+        String voices[] = getActivity().getResources().getStringArray(R.array.voices);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.spinner_item,voices);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
+        voicesSpinner.setAdapter(adapter);
+        voicesSpinner.setPadding(8,8,8,8);
     }
 }

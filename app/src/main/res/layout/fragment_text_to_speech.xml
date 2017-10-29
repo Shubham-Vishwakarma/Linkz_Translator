@@ -4,46 +4,69 @@
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context="com.example.admin.translator.fragments.TextToSpeechFragment">
+
+    <android.support.design.widget.TextInputEditText
+        android:id="@+id/textInput"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:inputType="text"
+        android:layout_margin="@dimen/padding8dp"
+        android:padding="16dp"
+        android:gravity="start"
+        android:textSize="@dimen/textSize20sp"
+        android:textColorHint="@color/red"
+        android:textColor="@color/red"
+        android:hint="@string/enter_text_here"
+        android:background="@drawable/bubble_text"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/textSize20sp"
+            android:textSize="@dimen/textSize25sp"
             android:padding="@dimen/padding8dp"
-            android:text="@string/voice"/>
+            android:text="@string/voice"
+            android:textColor="@color/red"/>
 
         <Spinner
             android:id="@+id/voicesSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
             android:padding="@dimen/padding8dp"
             android:entries="@array/voices">
         </Spinner>
 
     </LinearLayout>
 
-    <android.support.design.widget.TextInputEditText
-        android:id="@+id/textInput"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/edittext_height_100dp"
-        android:inputType="text"
-        android:layout_margin="@dimen/padding8dp"
-        android:padding="@dimen/padding8dp"
-        android:gravity="start"
-        android:hint="@string/enter_text_here"
-        android:background="@drawable/rounded_edittext"/>
-
-    <Button
+    <LinearLayout
         android:id="@+id/translateButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/padding8dp"
-        android:text="@string/tap_to_listen"/>
+        android:orientation="vertical"
+        android:padding="@dimen/padding8dp">
+
+        <ImageView
+            android:layout_width="@dimen/speaker_radius"
+            android:layout_height="@dimen/speaker_radius"
+            android:src="@drawable/megaphone"
+            android:layout_gravity="center"
+            android:contentDescription="@string/tap_to_listen" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize20sp"
+            android:text="@string/tap_to_listen"
+            android:gravity="center"
+            android:padding="@dimen/padding8dp"
+            android:textColor="@color/red"/>
+    </LinearLayout>
 
 </LinearLayout>
