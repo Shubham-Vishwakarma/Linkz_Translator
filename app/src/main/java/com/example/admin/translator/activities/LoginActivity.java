@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.admin.translator.Constants;
 import com.example.admin.translator.R;
 import com.example.admin.translator.models.User;
 import com.google.android.gms.auth.api.Auth;
@@ -76,17 +77,23 @@ public class LoginActivity extends AppCompatActivity {
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+            public void onAuthStateChanged(@NonNull final FirebaseAuth firebaseAuth) {
+                final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 if (firebaseUser != null){
+                    showProgressDialog(getString(R.string.retrieving_user_data));
                     databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             User user = dataSnapshot.getValue(User.class);
                             if (user != null) {
+                                hideProgressDialog();
                                 Toast.makeText(LoginActivity.this,"Welcome " + user.Name,Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                                SharedPreferences.Editor editor = getSharedPreferences(Constants.PREFS,MODE_PRIVATE).edit();
+                                editor.putBoolean(Constants.LOGGED_IN,true);
+                                editor.putString(Constants.FIREBASE_ID,firebaseUser.getUid());
+                                editor.apply();
                                 finish();
                             }
                         }
@@ -137,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                         email = mEmailView.getText().toString();
                         password = mPasswordView.getText().toString();
                         if(isValid()){
-                            showProgressDialog();
+                            showProgressDialog(getString(R.string.logging));
                             login(email,password);
                         }
                     }
@@ -171,7 +178,7 @@ public class LoginActivity extends AppCompatActivity {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if(result.isSuccess()){
                 GoogleSignInAccount account = result.getSignInAccount();
-                showProgressDialog();
+                showProgressDialog(getString(R.string.logging));
                 firebaseAuthWithGoogle(account);
             }
             else{
@@ -189,6 +196,10 @@ public class LoginActivity extends AppCompatActivity {
                         hideProgressDialog();
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        SharedPreferences.Editor editor = getSharedPreferences(Constants.PREFS,MODE_PRIVATE).edit();
+                        editor.putBoolean(Constants.LOGGED_IN,true);
+                        editor.putString(Constants.FIREBASE_ID,user.getUid());
+                        editor.apply();
                         finish();
                     }
                 }).addOnFailureListener(this, new OnFailureListener() {
@@ -265,11 +276,11 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void showProgressDialog(){
+    private void showProgressDialog(String message){
         progressDialog = new ProgressDialog(this);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage(getString(R.string.logging));
+        progressDialog.setMessage(message);
         progressDialog.show();
     }
 

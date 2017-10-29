@@ -3,6 +3,7 @@ package com.example.admin.translator.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.admin.translator.Constants;
 import com.example.admin.translator.R;
 import com.example.admin.translator.fragments.SpeechToSpeechFragment;
 import com.example.admin.translator.fragments.SpeechToTextFragment;
@@ -65,6 +67,16 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences pref = getSharedPreferences(Constants.PREFS,MODE_PRIVATE);
+        if(!pref.getBoolean(Constants.LOGGED_IN,false)){
+            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            finish();
         }
     }
 

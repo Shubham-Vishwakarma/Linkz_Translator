@@ -6,6 +6,6 @@ package com.example.admin.translator;
 
 public class Constants {
     public static final String PREFS = "PREFS";
-    public static final String DARK_THEME = "DARK_THEME";
     public static final String LOGGED_IN = "LOGGED_IN";
+    public static final String FIREBASE_ID = "FIREBASE_ID";
 }

@@ -2,6 +2,7 @@ package com.example.admin.translator.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.admin.translator.Constants;
 import com.example.admin.translator.R;
 import com.example.admin.translator.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -57,6 +59,10 @@ public class SignUpActivity extends AppCompatActivity{
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null){
                     Toast.makeText(SignUpActivity.this,"Welcome " + name,Toast.LENGTH_SHORT).show();
+                    SharedPreferences.Editor editor = getSharedPreferences(Constants.PREFS,MODE_PRIVATE).edit();
+                    editor.putBoolean(Constants.LOGGED_IN,true);
+                    editor.putString(Constants.FIREBASE_ID,user.getUid());
+                    editor.apply();
                     startActivity(new Intent(SignUpActivity.this,MainActivity.class));
                     finish();
                 }

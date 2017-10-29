@@ -53,4 +53,5 @@
     <string name="google_signin_failed">Google SignIn Failed</string>
     <string name="logging">Logging to Linkz_Translator…</string>
     <string name="sign_out">Sign Out</string>
+    <string name="retrieving_user_data">Retreiving User data...</string>
 </resources>
