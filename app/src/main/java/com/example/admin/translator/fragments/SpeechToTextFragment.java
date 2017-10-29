@@ -12,7 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.admin.translator.IBMUtilies.IBMInitialization;
@@ -32,7 +32,7 @@ public class SpeechToTextFragment extends Fragment {
 
     private static final String TAG = "SpeechToTextFragment";
     private static final int DEFAULT_TIMEOUT = 5000;
-    private Button speakButton;
+    private LinearLayout speakButton;
     private TextView resultTextView,timerTextView;
 
     private SpeechToText speechService;
@@ -58,9 +58,9 @@ public class SpeechToTextFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.speech_to_text);
 
         speechService = IBMInitialization.initSpeechToTextService(getContext());
-        speakButton = (Button)view.findViewById(R.id.speakButton);
-        resultTextView = (TextView)view.findViewById(R.id.resultTextView);
-        timerTextView = (TextView)view.findViewById(R.id.timerTextView);
+        speakButton = view.findViewById(R.id.speakButton);
+        resultTextView = view.findViewById(R.id.resultTextView);
+        timerTextView = view.findViewById(R.id.timerTextView);
 
         speakButton.setOnClickListener(new View.OnClickListener() {
             @Override

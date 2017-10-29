@@ -91,7 +91,7 @@
         android:padding="@dimen/padding8dp"
         android:textColor="@color/red"
         android:textColorHint="@color/red"
-        android:hint="@string/your_input_text_will_be_displayed_here"
+        android:hint="@string/your_input_speech_will_be_displayed_here"
         android:background="@drawable/rounded_edittext"/>
 
     <LinearLayout

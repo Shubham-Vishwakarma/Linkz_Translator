@@ -28,7 +28,7 @@
 
     <!--TextToSpeechFragment-->
     <string name="tap_to_listen">Tap to Listen</string>
-    <string name="your_input_text_will_be_displayed_here">Your input text will be displayed here…</string>
+    <string name="your_input_speech_will_be_displayed_here">Your input speech will be displayed here…</string>
     <string name="voice">Voice</string>
 
     <!--SignUpActivity-->
