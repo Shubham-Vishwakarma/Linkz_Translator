@@ -5,13 +5,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_marginTop="?attr/actionBarSize"
+    android:background="@color/white"
     tools:context="com.example.admin.translator.fragments.SpeechToSpeechFragment">
 
     <LinearLayout
         android:id="@+id/speakButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="16dp"
+        android:padding="@dimen/padding8dp">
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="@dimen/speaker_radius"
             android:layout_height="@dimen/speaker_radius"
@@ -42,6 +45,7 @@
             android:layout_height="wrap_content"
             android:text="@string/timer"
             android:textSize="@dimen/textSize25sp"
+            android:layout_marginRight="16dp"
             android:textColor="@color/dark_blue"/>
 
         <TextView
@@ -71,7 +75,7 @@
         <Spinner
             android:id="@+id/voicesSpinner"
             android:layout_width="250dp"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:padding="@dimen/padding8dp"
             android:entries="@array/voices">
         </Spinner>
@@ -81,11 +85,12 @@
     <TextView
         android:id="@+id/resultTextView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/edittext_height_50dp"
+        android:layout_height="@dimen/edittext_height_100dp"
         android:layout_margin="8dp"
         android:textSize="@dimen/textSize20sp"
         android:padding="@dimen/padding8dp"
         android:textColor="@color/red"
+        android:textColorHint="@color/red"
         android:hint="@string/your_input_text_will_be_displayed_here"
         android:background="@drawable/rounded_edittext"/>
 

@@ -1,26 +1,29 @@
 package com.example.admin.translator.fragments;
 
 
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.admin.translator.IBMUtilies.IBMInitialization;
 import com.example.admin.translator.IBMUtilies.MicrophoneRecognizeDelegate;
 import com.example.admin.translator.IBMUtilies.SynthesisTask;
+import com.example.admin.translator.IBMUtilies.TranslationTask;
 import com.example.admin.translator.R;
 import com.ibm.watson.developer_cloud.android.library.audio.MicrophoneInputStream;
 import com.ibm.watson.developer_cloud.language_translator.v2.LanguageTranslator;
+import com.ibm.watson.developer_cloud.language_translator.v2.model.Language;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.SpeechToText;
 import com.ibm.watson.developer_cloud.text_to_speech.v1.TextToSpeech;
 import com.ibm.watson.developer_cloud.text_to_speech.v1.model.Voice;
@@ -34,8 +37,9 @@ public class SpeechToSpeechFragment extends Fragment {
 
     private static final String TAG = "SpeechToSpeechFragment";
     private static final int DEFAULT_TIMEOUT = 5000;
-    private Button speakButton;
+    private LinearLayout speakButton,listenButton;
     private TextView resultTextView,timerTextView;
+    private Spinner voicesSpinner;
 
     private SpeechToText speechService;
     private LanguageTranslator translationService;
@@ -60,13 +64,17 @@ public class SpeechToSpeechFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        speakButton = (Button)view.findViewById(R.id.speakButton);
-        resultTextView = (TextView)view.findViewById(R.id.resultTextView);
-        timerTextView = (TextView)view.findViewById(R.id.timerTextView);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.speech_to_speech);
+
+        speakButton = view.findViewById(R.id.speakButton);
+        resultTextView = view.findViewById(R.id.resultTextView);
+        timerTextView = view.findViewById(R.id.timerTextView);
+        voicesSpinner = view.findViewById(R.id.voicesSpinner);
 
         speechService = IBMInitialization.initSpeechToTextService(getContext());
         translationService = IBMInitialization.initLanguageTranslationService(getContext());
         textService = IBMInitialization.initTextToSpeechService(getContext());
+        setupSpinner();
 
         speakButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,14 +82,6 @@ public class SpeechToSpeechFragment extends Fragment {
                 try{
                     if(!listening)
                     {
-                        Drawable drawableLeft;
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            drawableLeft = getActivity().getDrawable(R.drawable.ic_mic_off_black_48dp);
-                        }
-                        else {
-                            drawableLeft = getActivity().getResources().getDrawable(R.drawable.ic_mic_off_black_48dp);
-                        }
-                        speakButton.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,null,null,null);
                         timer();
                         capture = new MicrophoneInputStream(true);
                         listening = true;
@@ -97,9 +97,9 @@ public class SpeechToSpeechFragment extends Fragment {
                                 try {
                                     capture.close();
                                     listening = false;
-                                    //Log.e(TAG,"Translation started");
-                                    //new TranslationTask(getActivity(),translationService, Language.ENGLISH,Language.SPANISH,resultTextView)
-                                    //        .execute(resultTextView.getText().toString());
+                                    Log.e(TAG,"Translation started");
+                                    new TranslationTask(getActivity(),translationService, Language.ENGLISH,Language.SPANISH,resultTextView)
+                                            .execute(resultTextView.getText().toString());
                                     Log.e(TAG,"Speech started");
                                     new SynthesisTask(getActivity(),textService, Voice.EN_ALLISON).execute(resultTextView.getText().toString());
                                 } catch (IOException e) {
@@ -115,44 +115,6 @@ public class SpeechToSpeechFragment extends Fragment {
                 }
             }
         });
-
-        /*speakButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.e(TAG,"Listening = " + listening);
-                if(!listening){
-                    capture = new MicrophoneInputStream(true);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try{
-                                Log.e(TAG,"Speech Recognizing started");
-                                speechService.recognizeUsingWebSocket(
-                                        capture, IBMInitialization.getRecognizeOptions(),
-                                        new MicrophoneRecognizeDelegate(MainActivity.this,resultTextView));
-                            }
-                            catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }).start();
-                    listening = true;
-                }
-                else {
-                    try {
-                        capture.close();
-                        listening = false;
-                        Log.e(TAG,"Translation started");
-                        new TranslationTask(MainActivity.this,translationService, Language.ENGLISH,Language.SPANISH,resultTextView)
-                                .execute(resultTextView.getText().toString());
-                        Log.e(TAG,"Speech started");
-                        new SynthesisTask(MainActivity.this,textService, Voice.EN_ALLISON).execute(resultTextView.getText().toString());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });*/
     }
 
     private void timer(){
@@ -170,5 +132,13 @@ public class SpeechToSpeechFragment extends Fragment {
                 cancel();
             }
         }.start();
+    }
+
+    private void setupSpinner(){
+        String voices[] = getActivity().getResources().getStringArray(R.array.voices);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.spinner_item,voices);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
+        voicesSpinner.setAdapter(adapter);
+        voicesSpinner.setPadding(8,8,8,8);
     }
 }
