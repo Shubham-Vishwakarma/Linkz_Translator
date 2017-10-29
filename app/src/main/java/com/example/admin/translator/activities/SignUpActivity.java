@@ -7,31 +7,35 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.admin.translator.R;
+import com.example.admin.translator.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by DELL on 31/03/2017.
  */
 
 public class SignUpActivity extends AppCompatActivity{
-
-
+    private static final String TAG = "SignUpActivity";
     EditText emailEdiText ,passwordEditText,nameEditText;
     Button signupButton;//loginButton,;
     private FirebaseAuth firebaseAuth;
     private  FirebaseAuth.AuthStateListener authStateListener;
     private String name,email,password;
     private ProgressDialog progressDialog;
+    private DatabaseReference databaseReference;
 
     //Button signout;
 
@@ -46,6 +50,7 @@ public class SignUpActivity extends AppCompatActivity{
         nameEditText = findViewById(R.id.name_editText);
 
         firebaseAuth =FirebaseAuth.getInstance();
+        databaseReference= FirebaseDatabase.getInstance().getReference();
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -81,6 +86,9 @@ public class SignUpActivity extends AppCompatActivity{
                         hideProgressDialog();
                         if (!task.isSuccessful()) {
                             Toast.makeText(SignUpActivity.this,R.string.error,Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            uploadData();
                         }
                     }
                 });
@@ -133,5 +141,23 @@ public class SignUpActivity extends AppCompatActivity{
 
     private void hideProgressDialog(){
         progressDialog.dismiss();
+    }
+
+    public void uploadData()
+    {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null){
+            Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+            String userId = user.getUid();
+            writeNewUser(userId,name,email);
+        }
+        else
+            Log.d(TAG, "onAuthStateChanged:signed_out");
+    }
+
+    public void writeNewUser(String userId,String Name,String Email)
+    {
+        User user = new User(Name,Email);
+        databaseReference.child("users").child(userId).setValue(user);
     }
 }

@@ -52,4 +52,5 @@
     <string name="error_invalid_email">Invalid Email</string>
     <string name="google_signin_failed">Google SignIn Failed</string>
     <string name="logging">Logging to Linkz_Translator…</string>
+    <string name="sign_out">Sign Out</string>
 </resources>
