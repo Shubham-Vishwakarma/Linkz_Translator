@@ -4,8 +4,6 @@
         <item>Spanish</item>
         <item>German</item>
         <item>French</item>
-        <item>Hindi</item>
-        <item>Bengali</item>
     </string-array>
 
     <string-array name="voices">

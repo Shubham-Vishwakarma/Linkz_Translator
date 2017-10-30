@@ -12,6 +12,9 @@
     <string name="text_to_text">Text To Text</string>
     <string name="text_to_speech">Text To Speech</string>
 
+    <!--TranslationTask-->
+    <string name="wait_for_moment">Please wait for a moment…</string>
+
     <!--SpeechToSpeechFragment-->
     <string name="speechToTextEndPoint">https://stream.watsonplatform.net/speech-to-text/api</string>
     <string name="speak">Tap to Speak</string>

@@ -87,7 +87,7 @@ public class TextToTextFragment extends Fragment {
         translateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!resultTextView.getText().toString().isEmpty()) {
+                if(!textInput.getText().toString().isEmpty()) {
                     new TranslationTask(getActivity(), translationService, Language.ENGLISH, selectedTargetLanguage, resultTextView)
                             .execute(textInput.getText().toString());
                 }
