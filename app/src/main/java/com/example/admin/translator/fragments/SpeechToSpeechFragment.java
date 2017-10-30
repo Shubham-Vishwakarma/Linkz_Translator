@@ -48,6 +48,7 @@ public class SpeechToSpeechFragment extends Fragment {
     private TextToSpeech textService;
     private MicrophoneInputStream capture;
     private boolean listening = false;
+    private Language selectedTargetLanguage;
     private Voice selectedVoice;
 
 
@@ -84,17 +85,17 @@ public class SpeechToSpeechFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i){
-                    case 0 : selectedVoice = Voice.EN_ALLISON;
+                    case 0 :
+                        selectedVoice = Voice.FR_RENEE;
+                        selectedTargetLanguage = Language.FRENCH;
                         break;
-                    case 1 : selectedVoice = Voice.EN_LISA;
+                    case 1 :
+                        selectedVoice = Voice.GB_KATE;
+                        selectedTargetLanguage = Language.GERMAN;
                         break;
-                    case 2 : selectedVoice = Voice.EN_MICHAEL;
-                        break;
-                    case 3 : selectedVoice = Voice.FR_RENEE;
-                        break;
-                    case 4 : selectedVoice = Voice.GB_KATE;
-                        break;
-                    case 5 : selectedVoice = Voice.ES_SOFIA;
+                    case 2 :
+                        selectedVoice = Voice.ES_SOFIA;
+                        selectedTargetLanguage = Language.SPANISH;
                         break;
                 }
             }
@@ -127,7 +128,7 @@ public class SpeechToSpeechFragment extends Fragment {
                                     capture.close();
                                     listening = false;
                                     Log.e(TAG,"Translation started");
-                                    new TranslationTask(getActivity(),translationService, Language.ENGLISH,Language.SPANISH,resultTextView)
+                                    new TranslationTask(getActivity(),translationService, Language.ENGLISH,selectedTargetLanguage,resultTextView)
                                             .execute(resultTextView.getText().toString());
                                 } catch (IOException e) {
                                     e.printStackTrace();
@@ -174,7 +175,7 @@ public class SpeechToSpeechFragment extends Fragment {
     }
 
     private void setupSpinner(){
-        String voices[] = getActivity().getResources().getStringArray(R.array.voices);
+        String voices[] = getActivity().getResources().getStringArray(R.array.voices2);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.spinner_item,voices);
         adapter.setDropDownViewResource(R.layout.spinner_item);
         voicesSpinner.setAdapter(adapter);

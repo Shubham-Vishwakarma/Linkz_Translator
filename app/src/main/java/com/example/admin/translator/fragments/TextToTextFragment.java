@@ -71,9 +71,7 @@ public class TextToTextFragment extends Fragment {
                         break;
                     case 2: selectedTargetLanguage = Language.FRENCH;
                         break;
-                    case 3: selectedTargetLanguage = Language.HINDI;
-                        break;
-                    case 4: selectedTargetLanguage = Language.BENGALI;
+                    case 3: selectedTargetLanguage = Language.ENGLISH;
                         break;
                 }
             }
